@@ -1,4 +1,5 @@
-import { isObject } from "../utils/index";
+import { isObject, def } from "../utils/index";
+import { arrayMethods } from "./array";
 
 export function observe(data) {
   if (!isObject(data)) {
@@ -10,7 +11,14 @@ export function observe(data) {
 
 class Observer {
   constructor(values) {
-    this.walk(values)
+    def(values, '__ob__', this);
+    
+    if (Array.isArray(values)) {
+      values.__proto__ = arrayMethods;
+      this.observerArray(values);
+    } else {
+      this.walk(values);
+    }
   }
   walk(data) {
     let keys = Object.keys(data);
@@ -18,6 +26,12 @@ class Observer {
       // 定义响应式数据
       defineReactive(data, key, data[key]);
     })
+  }
+
+  observerArray(data) {
+    for (let i = 0; i < data.length; i++) {
+      observe(data[i]);
+    }
   }
 }
 

@@ -42,6 +42,49 @@
   function isObject(target) {
     return _typeof(target) === 'object' && target !== null;
   }
+  function def(data, key, value) {
+    Object.defineProperty(data, key, {
+      value: value,
+      enumerable: false,
+      configurable: false
+    });
+  }
+
+  var oldArrayMethods = Array.prototype;
+  var arrayMethods = Object.create(oldArrayMethods);
+  var methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
+  methods.forEach(function (method) {
+    arrayMethods[method] = function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var result = oldArrayMethods[method].apply(this, args);
+      console.log('method>>>>>', method);
+      var inserted;
+      var ob = this.__ob__;
+
+      switch (method) {
+        case 'push':
+          inserted = args;
+          break;
+
+        case 'unshift':
+          inserted = args;
+          break;
+
+        case 'spilice':
+          inserted = args.slice(2);
+          break;
+      }
+
+      if (inserted) {
+        ob.observerArray(inserted);
+      }
+
+      return result;
+    };
+  });
 
   function observe(data) {
     if (!isObject(data)) {
@@ -55,7 +98,14 @@
     function Observer(values) {
       _classCallCheck(this, Observer);
 
-      this.walk(values);
+      def(values, '__ob__', this);
+
+      if (Array.isArray(values)) {
+        values.__proto__ = arrayMethods;
+        this.observerArray(values);
+      } else {
+        this.walk(values);
+      }
     }
 
     _createClass(Observer, [{
@@ -66,6 +116,13 @@
           // 定义响应式数据
           defineReactive(data, key, data[key]);
         });
+      }
+    }, {
+      key: "observerArray",
+      value: function observerArray(data) {
+        for (var i = 0; i < data.length; i++) {
+          observe(data[i]);
+        }
       }
     }]);
 
