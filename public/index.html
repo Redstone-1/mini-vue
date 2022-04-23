@@ -7,17 +7,19 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="app">
+    <p>{{ name }}</p>
+    <p>{{ age }}</p>
+  </div>
   <script src="/dist/mini-vue/vue.js"></script>
   <script>
     let vm = new Vue({
       el: "#app",
-      props: {
-        age: 24
-      },
       data() {
         console.log('this>>>>>', this);
         return {
           name: "郗文革",
+          age: 24,
           hobby: [{ z: 2 }],
         }
       }
