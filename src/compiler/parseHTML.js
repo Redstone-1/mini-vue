@@ -4,7 +4,6 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`) // 标签开头的正则，
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`) // 匹配标签结尾的
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>']+)))?/ // 属性匹配
 const startTagClose = /^\s*(\/?)>/ // 匹配标签结束的
-const defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
 let root = null; // ast 语法树树根
 let currentParent; // 当前父节点
