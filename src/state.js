@@ -2,7 +2,6 @@ import { observe } from './observer/index';
 
 export function initState (vm) {
   const options = vm.$options;
-  console.log('options>>>>>', options);
   if (options.props) {
     initProps(vm);
   }

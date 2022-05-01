@@ -6,6 +6,5 @@ export function compilerToFunction (template) {
   let root = parseHTML(template);
   let code = generateCode(root);
   const renderFn = new Function(`with(this){ return ${code} }`);
-  console.log('renderFn>>>>>', renderFn);
   return renderFn;
 }

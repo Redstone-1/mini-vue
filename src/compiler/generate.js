@@ -6,7 +6,7 @@ export function generateCode(el) {
   /**
    * remark: 生成一个字符串的 js 代码，使用 with 函数执行
    * _c: 是一个编译函数
-   * params: 1.标签名 2.属性 3.
+   * params: 1.标签名 2.属性
    */
   let code = `
     _c('${el.tag}',${el.attrs.length ? genProps(el.attrs) : 'undefined'}${children ? `,${children}` : ''})
