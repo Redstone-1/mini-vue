@@ -8,9 +8,7 @@ export function generateCode(el) {
    * _c: 是一个编译函数
    * params: 1.标签名 2.属性
    */
-  let code = `
-    _c('${el.tag}',${el.attrs.length ? genProps(el.attrs) : 'undefined'}${children ? `,${children}` : ''})
-  `
+  let code = `_c('${el.tag}',${el.attrs.length ? genProps(el.attrs) : 'undefined'}${children ? `,${children}` : ''})`; // 切勿换行，否则代码走不通
   return code
 }
 

@@ -1,9 +1,22 @@
 export function createElement(tag, data, ...children) {
-  console.log('tag>>>>>', tag);
-  console.log('data>>>>>', data);
-  console.log('children>>>>>', children);
+  let key = data?.key;
+  if (key) {
+    delete data.key;
+  }
+
+  return vnode(tag, data, key, children, undefined)
 }
 
 export function createTextNode(text) {
-  console.log('text>>>>>', text);
+  return vnode(undefined, undefined, undefined, undefined,text)
+}
+
+function vnode(tag, data, key, children, text) {
+  return {
+    tag,
+    data,
+    key,
+    children,
+    text,
+  }
 }
