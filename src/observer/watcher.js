@@ -8,6 +8,8 @@ class Watcher {
     this.callback = callback,
     this.options = options;
     this.id = id++; // 每个 watcher 的唯一 id
+    this.depsId = new Set();
+    this.deps = [];
     this.get();
   }
 
@@ -19,6 +21,15 @@ class Watcher {
 
   update() {
     this.get();
+  }
+
+  addDep(dep) {
+    let id = dep.id;
+    if (!this.depsId.has(id)) {
+      this.depsId.add(id);
+      this.deps.push(dep);
+      dep.addSub(this);
+    }
   }
 }
 
