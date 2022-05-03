@@ -1,5 +1,6 @@
 import { isObject, def } from "../utils/index";
 import { arrayMethods } from "./array";
+import Dep from './dep';
 
 export function observe(data) {
   if (!isObject(data)) {
@@ -36,17 +37,23 @@ class Observer {
 }
 
 function defineReactive (data, key, value) {
+  let dep = new Dep(); // 依赖收集
   observe(value); // 如果对象属性也是对象，递归劫持
   Object.defineProperty(data, key, {
     configurable: true,
     enumerable: true,
     get() {
+      if (Dep.target) {
+        dep.depend(); // 将 watcher 存起来
+      }
       return value
     },
     set(newValue) {
       if (newValue === value) return;
       observe(newValue); // 如果用户给对象从新赋值，劫持新值
       value = newValue;
+
+      dep.notify(); // 通知依赖的 watcher 进行更新
     }
   })
 }
