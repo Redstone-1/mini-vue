@@ -9,6 +9,7 @@
 <body>
   <div id="app" style="color: red">
     <p>a:{{ name }} b:{{ age }}</p>
+    <p>{{ hobby }}</p>
   </div>
   <script src="/dist/mini-vue/vue.js"></script>
   <script>
@@ -18,7 +19,7 @@
         return {
           name: "小明",
           age: 24,
-          hobby: [{ z: 2 }],
+          hobby: [[1, 2]],
         }
       },
       beforeCreate() {
@@ -31,6 +32,11 @@
         console.log('this.$el>>>>>', this.$el);
       }
     })
+
+    setTimeout(() => {
+      vm.name = '小红'
+      vm.hobby[0].push(4);
+    }, 1000);
   </script>
 </body>
 </html>

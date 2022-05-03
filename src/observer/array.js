@@ -35,6 +35,8 @@ methods.forEach(method => {
       ob.observerArray(inserted);
     }
 
+    ob.dep.notify(); // 如果用户调用了上述方法，就会触发 dep 中的 notify 方法
+    
     return result;
   }
 })
