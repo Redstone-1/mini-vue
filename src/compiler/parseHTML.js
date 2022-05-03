@@ -5,62 +5,62 @@ const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`) // 匹配标签结尾的
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>']+)))?/ // 属性匹配
 const startTagClose = /^\s*(\/?)>/ // 匹配标签结束的
 
-let root = null; // ast 语法树树根
-let currentParent; // 当前父节点
-let stack = [];
-
-const ELEMENT_TYPE = 1; // 元素节点类型
-const TEXT_TYPE = 3; // 文本节点类型
-
-// 创建 AST 对象
-function createASTElement(tagName, attrs) {
-  return {
-    tag: tagName,
-    type: ELEMENT_TYPE,
-    children: [],
-    attrs,
-    parent: null,
-  }
-}
-
-// 遇到开始标签，创建一个 AST 对象
-function start(tagName, attrs) {
-  let element = createASTElement(tagName, attrs);
-  if (!root) {
-    root = element;
-  }
-  currentParent = element;
-  stack.push(element);
-}
-
-// 遇到文本标签就将它添加为 children
-function chars(text) {
-  text = text.replace(/\s/g, '');
-  if (text) {
-    currentParent.children.push({
-      text,
-      type: TEXT_TYPE,
-    })
-  }
-}
-
-// 遇到闭合标签
-function end(tagName) {
-  // 取出栈中最后一个开始标签
-  let element = stack.pop();
-  if (element.tag === tagName) {
-    // 获取该标签的父节点
-    currentParent = stack[stack.length - 1];
-    // 如果父节点存在
-    if (currentParent) {
-      element.parent = currentParent.tag;
-      currentParent.children.push(element);
-    }
-  }
-}
-
 // 转换 HTML
 export function parseHTML (html) {
+  let root = null; // ast 语法树树根
+  let currentParent; // 当前父节点
+  let stack = [];
+
+  const ELEMENT_TYPE = 1; // 元素节点类型
+  const TEXT_TYPE = 3; // 文本节点类型
+
+  // 创建 AST 对象
+  function createASTElement(tagName, attrs) {
+    return {
+      tag: tagName,
+      type: ELEMENT_TYPE,
+      children: [],
+      attrs,
+      parent: null,
+    }
+  }
+
+  // 遇到开始标签，创建一个 AST 对象
+  function start(tagName, attrs) {
+    let element = createASTElement(tagName, attrs);
+    if (!root) {
+      root = element;
+    }
+    currentParent = element;
+    stack.push(element);
+  }
+
+  // 遇到文本标签就将它添加为 children
+  function chars(text) {
+    text = text.replace(/\s/g, '');
+    if (text) {
+      currentParent.children.push({
+        text,
+        type: TEXT_TYPE,
+      })
+    }
+  }
+
+  // 遇到闭合标签
+  function end(tagName) {
+    // 取出栈中最后一个开始标签
+    let element = stack.pop();
+    if (element.tag === tagName) {
+      // 获取该标签的父节点
+      currentParent = stack[stack.length - 1];
+      // 如果父节点存在
+      if (currentParent) {
+        element.parent = currentParent.tag;
+        currentParent.children.push(element);
+      }
+    }
+  }
+
   while (html) {
     let textEnd = html.indexOf('<');
     if (textEnd === 0) {

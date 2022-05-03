@@ -38,6 +38,8 @@ class Observer {
 function defineReactive (data, key, value) {
   observe(value); // 如果对象属性也是对象，递归劫持
   Object.defineProperty(data, key, {
+    configurable: true,
+    enumerable: true,
     get() {
       return value
     },

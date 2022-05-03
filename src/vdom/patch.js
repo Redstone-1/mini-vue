@@ -8,6 +8,7 @@ export function patch(oldVNode, vnode) {
 
     parentEl.insertBefore(el, oldEl.nextSibling); // 向 body 注入新的 div
     parentEl.removeChild(oldEl); // 移除原来的 div
+    return el; // 将更新好的 el 返回，不然还是旧的 dom
   }
 } 
 

@@ -16,10 +16,19 @@
       el: "#app",
       data() {
         return {
-          name: "郗文革",
+          name: "小明",
           age: 24,
           hobby: [{ z: 2 }],
         }
+      },
+      beforeCreate() {
+        console.log('users>>>>>');
+      },
+      beforeMount() {
+        console.log('this.$el>>>>>', this.$el);
+      },
+      mounted() {
+        console.log('this.$el>>>>>', this.$el);
       }
     })
   </script>

@@ -1,5 +1,3 @@
-
-
 let oldArrayMethods = Array.prototype;
 export const arrayMethods = Object.create(oldArrayMethods)
 
@@ -16,7 +14,6 @@ const methods = [
 methods.forEach(method => {
   arrayMethods[method] = function (...args) {
     const result = oldArrayMethods[method].apply(this, args);
-    console.log('method>>>>>', method);
     let inserted;
     let ob = this.__ob__;
 
