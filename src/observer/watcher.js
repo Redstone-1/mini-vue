@@ -1,7 +1,8 @@
-import { pushTarget, popTarget } from './dep'
+import { pushTarget, popTarget } from './dep';
+import { queueWatcher } from './schedular';
 
 let id = 0;
-class Watcher {
+export default class Watcher {
   constructor(vm, exprOrFn, callback, options) {
     this.vm = vm;
     this.getter = exprOrFn;
@@ -20,7 +21,8 @@ class Watcher {
   }
 
   update() {
-    this.get();
+    // this.get(); // 如果直接调用则会触发频繁更新，为了多次更新合为一次，需要缓存变更
+    queueWatcher(this); // 队列更新
   }
 
   addDep(dep) {
@@ -31,6 +33,8 @@ class Watcher {
       dep.addSub(this);
     }
   }
-}
 
-export default Watcher;
+  run() {
+    this.get();
+  }
+}

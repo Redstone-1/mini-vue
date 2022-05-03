@@ -33,10 +33,16 @@
       }
     })
 
-    setTimeout(() => {
-      vm.name = '小红'
-      vm.hobby[0].push(4);
-    }, 1000);
+    vm.$nextTick(() => {
+      console.log('vm.$el.innerHTML>>>>>', vm.$el.innerHTML);
+    })
+    vm.name = '小红'
+    // 下面的代码涉及异步更新
+    vm.hobby[0].push(4);
+    vm.hobby[0].push(4);
+    vm.hobby[0].push(4);
+    vm.hobby[0].push(4);
+
   </script>
 </body>
 </html>

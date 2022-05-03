@@ -1,7 +1,7 @@
 import { initState } from "./state";
 import { compilerToFunction } from './compiler/index';
 import { mountComponent, callHook } from './lifeCycle';
-import { mergeOptions } from './utils/index';
+import { mergeOptions, nextTick } from './utils/index';
 
 export function initMixin (Vue) {
   Vue.prototype._init = function (options) {
@@ -37,4 +37,6 @@ export function initMixin (Vue) {
     // 渲染当前组件
     mountComponent(vm, el);
   }
+
+  Vue.prototype.$nextTick = nextTick;
 }
