@@ -16,7 +16,6 @@ export function mountComponent(vm, el) {
   // 渲染页面，不论渲染还是更新都会调用这个函数
   let updateComponent = () => {
     // 返回的是虚拟 dom
-    console.log('>>>>>');
     vm._update(vm._render());
   }
 

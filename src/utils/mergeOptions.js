@@ -5,20 +5,37 @@ const LIFECYCLE_HOOKS = ['beforeCreate', 'created', 'beforeMount', 'mounted', 'b
 let strategies = {};
 
 LIFECYCLE_HOOKS.forEach((hook) => {
-  strategies[hook] = mergeHook;
+  strategies[hook] = function (parentVal, childVal) {
+    if (childVal) {
+      if (parentVal) {
+        // 父子都有值 ，用父和子拼接在一起 ， 父有值就一直是数组
+        return parentVal.concat(childVal)
+      } else {
+        // 儿子有值，父没有值
+        if (Array.isArray(childVal)) {
+          return childVal
+        } else {
+          return [childVal] // 如果没值就变成数组
+        }
+      }
+    } else {
+      return parentVal
+    }
+  };
 })
 
-function mergeHook(parentVal, childVal) {
+// 合并全局 API，比如 components，filter，directive
+strategies.components = function (parentVal, childVal) {
+  console.log('parentVal>>>>>', parentVal);
+  console.log('childVal>>>>>', childVal);
+  const res = Object.create(parentVal);
   if (childVal) {
-    if (parentVal) {
-      return ([parentVal].concat(childVal)).flat(Infinity);
-    } else {
-      return [childVal];
+    for (let key in childVal) {
+      res[key] = childVal[key];
     }
-  } else {
-    return [parentVal];
   }
-}
+  return res;
+};
 
 // 合并父子 options，即混入 mixin
 export function mergeOptions(parentOptions, childOptions) {

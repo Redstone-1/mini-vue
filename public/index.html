@@ -10,6 +10,7 @@
   <div id="app" style="color: red">
     <p>a:{{ name }} b:{{ age }}</p>
     <p>{{ hobby }}</p>
+    <my-comp></my-comp>
   </div>
   <script src="/dist/mini-vue/vue.js"></script>
   <script>
@@ -20,6 +21,11 @@
           name: "小明",
           age: 24,
           hobby: [[1, 2]],
+        }
+      },
+      components: {
+        'my-comp': {
+          template: '<div>好好</div>'
         }
       },
       beforeCreate() {
@@ -42,6 +48,14 @@
     vm.hobby[0].push(4);
     vm.hobby[0].push(4);
     vm.hobby[0].push(4);
+
+    // 下面是注册全局组件
+
+    // Vue.component('my-comp', {
+    //   template: `
+    //     <div>hello</div>
+    //   `
+    // })
 
   </script>
 </body>

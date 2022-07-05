@@ -1,4 +1,8 @@
 export function patch(oldVNode, vnode) {
+  if (!oldVNode) {
+    // 说明是组件挂载
+    return createEl(vnode);
+  }
   // 第一步，判断渲染还是更新
   const isRealElement = oldVNode.nodeType; // 如果是第一次那么 oldVNode 就是一个真实节点 el
   if (isRealElement) {
@@ -12,12 +16,26 @@ export function patch(oldVNode, vnode) {
   }
 } 
 
+function isComponent(vnode) {
+  let i = vnode.data;
+  if ((i = i.hook) && (i = i.init)) {
+    i(vnode);
+  }
+  if (vnode.componentInstance) {
+    
+    return true;
+  }
+}
+
 function createEl(vnode) {
   let { tag, children, text } = vnode;
   if (typeof tag === 'string') {
+    if (isComponent(vnode)) {
+      return vnode.componentInstance.$el;
+    }
     vnode.el = document.createElement(tag);
     updateProperties(vnode);
-    children.forEach(child => {
+    Object.prototype.toString.call(children) === '[object Array]' && children.forEach(child => {
       return vnode.el.appendChild(createEl(child));
     })
   } else {

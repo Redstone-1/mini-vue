@@ -1,11 +1,12 @@
-import { isObject, def, proxy } from "./tools";
-import { mergeOptions } from "./mixin";
+import { isObject, def, proxy, isOriginalTag } from "./tools";
+import { mergeOptions } from "./mergeOptions";
 import { nextTick } from "./nextTick";
 
 export {
   isObject,
   def,
   proxy,
+  isOriginalTag,
   mergeOptions,
   nextTick,
 }
